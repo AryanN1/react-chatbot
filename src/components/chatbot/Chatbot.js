@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import axios from 'axios/index';
 import Message from './Message';
 
-const baseURL = ''
+const baseURL = '';
 //'https://warm-basin-86893.herokuapp.com' 
 
 class Chatbot extends Component {
 
 
 constructor(props) {
+  messagesEnd;
   super(props)
 
+    this._handleInputKeyPress=this._handleInputKeyPress.bind(this);
   this.state = {
     messages: []
   }
@@ -70,6 +72,17 @@ componentDidMount() {
   this.df_event_query('Welcome');
 }
 
+componentDidUpdate() {
+  
+}
+
+
+_handleInputKeyPress(e) {
+  if (e.key === 'Enter'){
+    this.df_text_query(e.target.value);
+    e.target.value = '';
+  }
+}
 
   render () {
     return (
@@ -77,7 +90,10 @@ componentDidMount() {
         <div id="chatbot" style={{ height: '100%', width: '100%', overflow: 'auto'}}>
         <h2>Chatbot</h2>
         {this.renderMessages(this.state.messages)}
-        <input type="text"/> 
+        <div ref={(el)=> {this.mesasgesEnd = el; }}
+        
+        style={{float:'left', clear:'both'}}></div>
+        <input type="text" onKeyPress={this.handleInputKeyPress}/> 
         </div>
       </div>
     )
