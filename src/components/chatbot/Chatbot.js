@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios/index';
 import Message from './Message';
 
-const baseURL = '' 
+const baseURL = ''
 //'https://warm-basin-86893.herokuapp.com' 
 
 class Chatbot extends Component {
