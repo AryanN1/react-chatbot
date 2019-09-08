@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import axios from 'axios/index';
 import Message from './Message';
+const baseURL = 
+  process.env.NODE_ENV  === 'production'
+    ? 'http://localhost:5000'
+    : 'https://warm-basin-86893.herokuapp.com';
 
-const baseURL = '';
-//'https://warm-basin-86893.herokuapp.com' 
+    {/* Old way of set up
+  const baseURL = '';
+'https://warm-basin-86893.herokuapp.com' 
+*/}
 
 class Chatbot extends Component {
-
-
-constructor(props) {
   messagesEnd;
+constructor(props) {
   super(props)
 
     this._handleInputKeyPress=this._handleInputKeyPress.bind(this);
@@ -33,7 +37,7 @@ async df_text_query(text){
   console.log(text)
   const res = await axios.post(`${baseURL}/api/df_text_query`, {text: text});
 
-  for (let msg of res.data.fulfullmentMessages) {
+  for (let msg of res.data.fulfillmentMessages) {
     says = {
       speaks: 'bot',
       msg: msg
@@ -50,7 +54,7 @@ async df_event_query(event){
   console.log(res.data)
   for (let msg of res.data.fulfillmentMessages){
     let says = {
-      speaks: 'me',
+      speaks: 'bot',
       msg: msg
     }
     this.setState({messages: [...this.state.messages, says]});
@@ -73,7 +77,7 @@ componentDidMount() {
 }
 
 componentDidUpdate() {
-  
+  this.messagesEnd.scrollIntoView({behavior: "smooth"});
 }
 
 
@@ -90,10 +94,10 @@ _handleInputKeyPress(e) {
         <div id="chatbot" style={{ height: '100%', width: '100%', overflow: 'auto'}}>
         <h2>Chatbot</h2>
         {this.renderMessages(this.state.messages)}
-        <div ref={(el)=> {this.mesasgesEnd = el; }}
+        <div ref={(el)=> {this.messagesEnd = el; }}
         
         style={{float:'left', clear:'both'}}></div>
-        <input type="text" onKeyPress={this.handleInputKeyPress}/> 
+        <input type="text" onKeyPress={this._handleInputKeyPress}/> 
         </div>
       </div>
     )
