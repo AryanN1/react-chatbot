@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios/index';
 import Message from './Message';
+import Cookies from 'universal-cookie';
+import { v4 as uuid } from 'uuid';
+
 const baseURL = 
   process.env.NODE_ENV  === 'production'
     ? 'http://localhost:5000'
     : 'https://warm-basin-86893.herokuapp.com';
 
-    {/* Old way of set up
+    /* Old way of set up
   const baseURL = '';
 'https://warm-basin-86893.herokuapp.com' 
-*/}
+*/
+
+const cookies = new Cookies();
 
 class Chatbot extends Component {
   messagesEnd;
@@ -19,39 +24,46 @@ constructor(props) {
     this._handleInputKeyPress=this._handleInputKeyPress.bind(this);
   this.state = {
     messages: []
-  }
-
-}
-
-async df_text_query(text){
-  let says = {
-    speaks: 'me',
-    msg: {
-      text: {
-        text: text
-      }
-    }
   };
 
-  this.setState({ messages: [...this.state.messages, says]});
-  console.log(text)
-  const res = await axios.post(`${baseURL}/api/df_text_query`, {text: text});
-
-  for (let msg of res.data.fulfillmentMessages) {
-    says = {
-      speaks: 'bot',
-      msg: msg
-      }
-      this.setState({ messages: [...this.state.messages, says]});
-    }
+  if (cookies.get('userID') === undefined) {
+    cookies.set('userID', uuid(), {path: '/'});
+  }
+  console.log(cookies.get('userID'));
 }
 
-async df_event_query(event){
-  let body = {
-    event: event
+async df_text_query(queryText){
+  let msg;
+  let says = {
+    speaks: 'me',
+      msg: {
+        text: {
+          text: queryText
+      }
+    }
   }
-  const res= await axios.post( `${baseURL}/api/df_event_query`, body );
-  console.log(res.data)
+
+  this.setState({ messages: [...this.state.messages, says]});
+  //console.log(text)
+  const res = await axios.post(`${baseURL}/api/df_text_query`, {text: queryText,
+    userID: cookies.get('userID')});
+    if (res.data.fulfillmentMessages) {
+      for (let i = 0; i < res.data.fulfillmentMessages.length; i++) {
+        msg = res.data.fulfillmentMessages[i];
+        says = {
+          speaks: 'bot',
+            msg: msg
+          }
+          this.setState({ messages: [...this.state.messages, says]});
+        }
+    }
+};
+
+async df_event_query(eventName){
+  
+  const res= await axios.post( `${baseURL}/api/df_event_query`, {event: eventName, 
+    userID: cookies.get('userID')} );
+  //console.log(res.data)
   for (let msg of res.data.fulfillmentMessages){
     let says = {
       speaks: 'bot',
