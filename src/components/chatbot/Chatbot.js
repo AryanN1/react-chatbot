@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios/index';
 import Message from './Message';
 import Cookies from 'universal-cookie';
 import { v4 as uuid } from 'uuid';
 import Card from './Card';
 import QuickReplies from './QuickReplies'; 
-//import QuickReply from './QuickReply';
+
 
 const baseURL = 
   process.env.NODE_ENV  === 'production'
@@ -21,6 +22,7 @@ const cookies = new Cookies();
 
 class Chatbot extends Component {
   messagesEnd;
+  talkInput;
 constructor(props) {
   super(props)
     this._handleInputKeyPress=this._handleInputKeyPress.bind(this);
@@ -31,7 +33,8 @@ constructor(props) {
 
     this.state = {
       messages: [],
-      showBot: true
+      showBot: true,
+      shopWelcomeSent: false
     };
     
   if (cookies.get('userID') === undefined) {
@@ -138,8 +141,31 @@ renderMessages(stateMessages){
   }
 }
 
-componentDidMount() {
+resolveAfterXseconds(x){
+  return new Promise(resolve => {
+    setTimeout (()=> {
+      resolve(x);
+    }, x * 1000);
+  });
+}
+
+async componentDidMount() {
   this.df_event_query('Welcome');
+
+  if (window.location.pathname === '/shop' &&
+  !this.shopWelcomeSent){
+    await this.resolveAfterXseconds(1);
+    this.df_event_query('WELCOME_SHOP');
+    this.setState({shopWelcomeSent: true, showBot: true})
+  }
+  this.props.history.listen(() => {
+    console.log('listening');
+    if (this.props.history.location.pathname === '/shop'
+    && !this.state.shopWelcomeSent){
+      this.df_event_query('WELCOME_SHOP');
+      this.setState({shopWelcomeSent: true, showBot: true});
+      }
+  });
 }
 
 componentDidUpdate() {
@@ -153,16 +179,16 @@ renderCards(cards) {
   return cards.map((card, i) => <Card key={i} payload={card.structValue}/>);
   }
 
-_handleQuickReplyPayload(event, payload, text){
-  event.preventDefault();
-  event.stopPropagation();
-
+_handleQuickReplyPayload(payload, text){
   switch(payload) {
-    case 'training_masterclass':
-      this.df_event_query('MASTERCLASS');
-    default: 
-      this.df_text_query(text);
+    case 'recommend_yes':
+        this.df_event_query('SHOW_RECOMMENDATIONS');
     break;
+      case 'training_masterclass':
+      this.df_event_query('MASTERCLASS');
+      default: 
+      this.df_text_query(text);
+      break;
   }
 }
 
@@ -221,4 +247,4 @@ _handleInputKeyPress(e) {
   } 
 }
 
-export default Chatbot;
+export default withRouter(Chatbot);
