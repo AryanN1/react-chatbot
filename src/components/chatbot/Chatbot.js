@@ -25,12 +25,11 @@ class Chatbot extends Component {
   talkInput;
 constructor(props) {
   super(props)
-    this._handleInputKeyPress=this._handleInputKeyPress.bind(this);
+    this._handleInputKeyPress = this._handleInputKeyPress.bind(this);
     this._handleQuickReplyPayload = this._handleQuickReplyPayload.bind(this);
 
     this.hide=this.hide.bind(this);
     this.show=this.show.bind(this);
-
     this.state = {
       messages: [],
       showBot: true,
@@ -53,11 +52,11 @@ async df_text_query(queryText){
       }
     }
   }
-
   this.setState({ messages: [...this.state.messages, says]});
-  //console.log(text)
+  
   const res = await axios.post(`${baseURL}/api/df_text_query`, {text: queryText,
     userID: cookies.get('userID')});
+
     if (res.data.fulfillmentMessages) {
       for (let i = 0; i < res.data.fulfillmentMessages.length; i++) {
         msg = res.data.fulfillmentMessages[i];
@@ -103,7 +102,7 @@ renderOneMessage(message, i) {
   } else if (message.msg && message.msg.payload && message.msg.payload.fields &&
     message.msg.payload.fields.cards) {
 
-      return <div key={{i}}>
+      return <div key={i}>
         <div className="card-panel grey lighten-5 z-depth-1">
           <div style={{overflow: 'hidden'}}>
             <div className="col s2">
@@ -179,13 +178,17 @@ renderCards(cards) {
   return cards.map((card, i) => <Card key={i} payload={card.structValue}/>);
   }
 
-_handleQuickReplyPayload(payload, text){
+_handleQuickReplyPayload(event,payload, text){
+  event.preventDefault();
+  event.stopPropagation();
+
   switch(payload) {
     case 'recommend_yes':
         this.df_event_query('SHOW_RECOMMENDATIONS');
     break;
       case 'training_masterclass':
       this.df_event_query('MASTERCLASS');
+      break;
       default: 
       this.df_text_query(text);
       break;
