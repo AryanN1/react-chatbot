@@ -7,11 +7,10 @@ import { v4 as uuid } from 'uuid';
 import Card from './Card';
 import QuickReplies from './QuickReplies'; 
 
-
 const baseURL = 
   process.env.NODE_ENV  === 'production'
-    ? 'http://localhost:5000'
-    : 'https://warm-basin-86893.herokuapp.com';
+    ? 'http://localhost:4000'
+    : 'http://localhost:4000';
 
     /* Old way of set up
   const baseURL = '';
@@ -23,6 +22,7 @@ const cookies = new Cookies();
 class Chatbot extends Component {
   messagesEnd;
   talkInput;
+
 constructor(props) {
   super(props)
     this._handleInputKeyPress = this._handleInputKeyPress.bind(this);
@@ -38,50 +38,77 @@ constructor(props) {
     
   if (cookies.get('userID') === undefined) {
     cookies.set('userID', uuid(), {path: '/'});
-
   }
 }
 
-async df_text_query(queryText){
-  let msg;
+async df_text_query(text){
   let says = {
-    speaks: 'me',
+    speaks: 'User',
       msg: {
         text: {
-          text: queryText
+          text: text
       }
     }
   }
   this.setState({ messages: [...this.state.messages, says]});
-  
-  const res = await axios.post(`${baseURL}/api/df_text_query`, {text: queryText,
-    userID: cookies.get('userID')});
-
-    if (res.data.fulfillmentMessages) {
-      for (let i = 0; i < res.data.fulfillmentMessages.length; i++) {
-        msg = res.data.fulfillmentMessages[i];
-        says = {
-          speaks: 'bot',
-            msg: msg
-          }
-          this.setState({ messages: [...this.state.messages, says]});
+    
+  try {
+      const res = await axios.post(`${baseURL}/api/df_text_query`, {text: text,
+        userID: cookies.get('userID')});
+    
+          for (let msg of res.data.fulfillmentMessages) {
+            says = {
+              speaks: 'Bot',
+                msg: msg
+              }
+              this.setState({ messages: [...this.state.messages, says]});
         }
-    }
-};
+    } catch (e) {
+        says = {
+          speaks: 'Bot',
+          msg: {
+            text: {
+              text: "I am having trouble, I need to terminate. I'll be back"
+            }
+          }
+        }
+        this.setState({ messages: [...this.state.messages, says]});
+        let that = this;
+        setTimeout(function(){
+          that.setState({showBot: false})
+        }, 2000);
+      }
+    };
 
-async df_event_query(eventName){
-  
-  const res= await axios.post( `${baseURL}/api/df_event_query`, {event: eventName, 
-    userID: cookies.get('userID')} );
-  //console.log(res.data)
-  for (let msg of res.data.fulfillmentMessages){
-    let says = {
-      speaks: 'bot',
-      msg: msg
+async df_event_query(event){
+  try{
+    const res= await axios.post( `${baseURL}/api/df_event_query`, {event: event, 
+      userID: cookies.get('userID')} );
+    for (let msg of res.data.fulfillmentMessages){
+      
+      let says = {
+        speaks: 'Bot',
+        msg: msg
+      }
+      this.setState({messages: [...this.state.messages, says]});
+    }
+  } catch (e){
+    let says ={
+      speaks: 'Bot',
+      msg:{
+        text: {
+          text: "I am having trouble, I need to terminate. I'll be back"
+        }
+      }
     }
     this.setState({messages: [...this.state.messages, says]});
+    let that = this;
+    setTimeout(function(){
+      that.setState({showBot: false})
+    }, 2000);
   }
-}
+  };
+  
 
 show(event){
   event.preventDefault();
@@ -157,8 +184,8 @@ async componentDidMount() {
     this.df_event_query('WELCOME_SHOP');
     this.setState({shopWelcomeSent: true, showBot: true})
   }
+
   this.props.history.listen(() => {
-    console.log('listening');
     if (this.props.history.location.pathname === '/shop'
     && !this.state.shopWelcomeSent){
       this.df_event_query('WELCOME_SHOP');
@@ -181,7 +208,6 @@ renderCards(cards) {
 _handleQuickReplyPayload(event,payload, text){
   event.preventDefault();
   event.stopPropagation();
-
   switch(payload) {
     case 'recommend_yes':
         this.df_event_query('SHOW_RECOMMENDATIONS');
@@ -205,12 +231,12 @@ _handleInputKeyPress(e) {
   render () {
     if(this.state.showBot) {
     return (
-      <div style={{minheight: 500, maxHeight: 500, width: 400, position: 'absolute', bottom: 0, right: 0, border: '1px solid lightgrey' }}>
+      <div style={{minheight: 500, maxHeight: 500, width: 500, position: 'absolute', bottom: 0, right: 0, border: '1px solid lightgrey' }}>
         <nav>
-          <div className="nav-wrapper">
-            <a href="/" className="brand-logo">Web Dev Chatbot</a>
+          <div className="nav-wrapper blue">
+            <a href="/" className="brand-logo">Chatbot</a>
             <ul id="nav-mobile" className="right">
-              <li><a href="/" onClick={this.hide}>Close</a></li>
+              <li><a href="/" onClick={this.hide}>Hide</a></li>
             </ul>
           </div>
         </nav>
@@ -223,9 +249,8 @@ _handleInputKeyPress(e) {
           </div>
         </div>
           <div className='col s12'>
-            <input style={{margin: 0, paddingLeft: '1%', paddingRight: '1%', width: '98%'}} placeholder= "Type a message:"  type="text" onKeyPress={this._handleInputKeyPress}/>  
+            <input style={{margin: 0, paddingLeft: '1%', paddingRight: '1%', width: '98%'}} ref={(input) => { this.talkInput = input; }} placeholder="type a message:"  onKeyPress={this._handleInputKeyPress} id="user_says" type="text"/>  
           </div>
-
       </div> 
       );
     } else {
@@ -234,16 +259,15 @@ _handleInputKeyPress(e) {
       <div style={{minheight: 40, maxHeight: 500, width: 400, position: 'absolute', bottom: 0, right: 0, border: '1px solid lightgrey' }}>
         <nav>
           <div className="nav-wrapper">
-            <a href="/" className="brand-logo">Web Dev Chatbot</a>
+            <a href="/" className="brand-logo">Chatbot</a>
             <ul id="nav-mobile" className="right">
-              <li><a href="/" onClick={this.show}>Open</a></li>
+              <li><a href="/" onClick={this.show}>Show</a></li>
             </ul>
           </div>
         </nav>
         <div ref={(el)=> {this.messagesEnd = el; }}
         style={{float:'left', clear:'both'}}>
         </div>
-
       </div> 
       );
     }
