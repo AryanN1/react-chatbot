@@ -1,0 +1,16 @@
+.appHeader {
+  color: #3f51b5;
+}
+.aboutText {
+  color: #e64a19;
+  font-size: 20px;
+}
+.techStack {
+  color: #e64a19;
+  font-size: 20px;
+}
+.listItem {
+  color: #3f51b5;
+  font-size: 20px;
+  list-style-type: circle;
+}
