@@ -11,7 +11,7 @@ import styles from "./Chatbot.module.css";
 const baseURL =
   process.env.NODE_ENV === "production"
     ? "https://warm-basin-86893.herokuapp.com"
-    : "http://localhost:4000";
+    : "https://warm-basin-86893.herokuapp.com";
 
 const cookies = new Cookies();
 
