@@ -6,15 +6,12 @@ import Cookies from "universal-cookie";
 import { v4 as uuid } from "uuid";
 import Card from "./Card";
 import QuickReplies from "./QuickReplies";
+import styles from "./Chatbot.module.css";
 
 const baseURL =
   process.env.NODE_ENV === "production"
-    ? "http://localhost:4000"
+    ? "https://warm-basin-86893.herokuapp.com"
     : "http://localhost:4000";
-
-/* Heroku App
-  'https://warm-basin-86893.herokuapp.com' 
-*/
 
 const cookies = new Cookies();
 
@@ -24,11 +21,12 @@ class Chatbot extends Component {
 
   constructor(props) {
     super(props);
+    // Binding is needed to make `this` work
     this._handleInputKeyPress = this._handleInputKeyPress.bind(this);
     this._handleQuickReplyPayload = this._handleQuickReplyPayload.bind(this);
-
     this.hide = this.hide.bind(this);
     this.show = this.show.bind(this);
+    //Setting State
     this.state = {
       messages: [],
       showBot: true,
@@ -39,7 +37,7 @@ class Chatbot extends Component {
       cookies.set("userID", uuid(), { path: "/" });
     }
   }
-
+  // Query the Text Input
   async df_text_query(text) {
     let says = {
       speaks: "User",
@@ -77,10 +75,10 @@ class Chatbot extends Component {
       let that = this;
       setTimeout(function() {
         that.setState({ showBot: false });
-      }, 4000);
+      }, 3000);
     }
   }
-
+  // Query the Event Input
   async df_event_query(event) {
     try {
       const res = await axios.post(`${baseURL}/api/df_event_query`, {
@@ -108,8 +106,16 @@ class Chatbot extends Component {
       let that = this;
       setTimeout(function() {
         that.setState({ showBot: false });
-      }, 4000);
+      }, 3000);
     }
+  }
+  // All functions here
+  resolveAfterXseconds(x) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(x);
+      }, x * 2000);
+    });
   }
 
   show(event) {
@@ -122,6 +128,51 @@ class Chatbot extends Component {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ showBot: false });
+  }
+
+  renderMessages(stateMessages) {
+    if (stateMessages) {
+      return stateMessages.map((message, i) => {
+        return this.renderOneMessage(message, i);
+      });
+    } else {
+      return null;
+    }
+  }
+
+  componentDidUpdate() {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    if (this.talkInput) {
+      this.talkInput.focus();
+    }
+  }
+
+  renderCards(cards) {
+    return cards.map((card, i) => 
+    <Card key={i} payload={card.structValue} />);
+  }
+
+  _handleQuickReplyPayload(event, payload, text) {
+    event.preventDefault();
+    event.stopPropagation();
+    switch (payload) {
+      case "recommend_yes":
+        this.df_event_query("SHOW_RECOMMENDATIONS");
+        break;
+      case "training_masterclass":
+        this.df_event_query("MASTERCLASS");
+        break;
+      default:
+        this.df_text_query(text);
+        break;
+    }
+  }
+
+  _handleInputKeyPress(e) {
+    if (e.key === "Enter") {
+      this.df_text_query(e.target.value);
+      e.target.value = "";
+    }
   }
 
   renderOneMessage(message, i) {
@@ -137,25 +188,21 @@ class Chatbot extends Component {
     ) {
       return (
         <div key={i}>
-          <div className="card-panel grey lighten-5 z-depth-1">
-            <div style={{ overflow: "hidden" }}>
+          <div className="card-panel grey lighten-5 z-depth-1"> 
+            <div className={styles.hidden}>
               <div className="col s2">
-                <a
+                <div
                   href="/"
                   className="btn-floating btn-large waves-effect waves-light red"
                 >
                   {message.speaks}
-                </a>
+                </div>
               </div>
-              <div style={{ overflow: "auto", overflowY: "scroll" }}>
-                <div
+              <div className={styles.overflow}>
+                <div 
                   style={{
-                    height: 300,
-                    width:
-                      message.msg.payload.fields.cards.listValue.values.length *
-                      270
-                  }}
-                >
+                  height: 300,
+                  width: message.msg.payload.fields.cards.listValue.values.length * 270}}>
                   {this.renderCards(
                     message.msg.payload.fields.cards.listValue.values
                   )}
@@ -186,34 +233,14 @@ class Chatbot extends Component {
       );
     }
   }
-
-  renderMessages(stateMessages) {
-    if (stateMessages) {
-      return stateMessages.map((message, i) => {
-        return this.renderOneMessage(message, i);
-      });
-    } else {
-      return null;
-    }
-  }
-
-  resolveAfterXseconds(x) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(x);
-      }, x * 1000);
-    });
-  }
-
+  //Component Mounting
   async componentDidMount() {
     this.df_event_query("Welcome");
-
     if (window.location.pathname === "/shop" && !this.shopWelcomeSent) {
       await this.resolveAfterXseconds(1);
       this.df_event_query("WELCOME_SHOP");
       this.setState({ shopWelcomeSent: true, showBot: true });
     }
-
     this.props.history.listen(() => {
       if (
         this.props.history.location.pathname === "/shop" &&
@@ -225,59 +252,15 @@ class Chatbot extends Component {
     });
   }
 
-  componentDidUpdate() {
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-    if (this.talkInput) {
-      this.talkInput.focus();
-    }
-  }
-
-  renderCards(cards) {
-    return cards.map((card, i) => <Card key={i} payload={card.structValue} />);
-  }
-
-  _handleQuickReplyPayload(event, payload, text) {
-    event.preventDefault();
-    event.stopPropagation();
-    switch (payload) {
-      case "recommend_yes":
-        this.df_event_query("SHOW_RECOMMENDATIONS");
-        break;
-      case "training_masterclass":
-        this.df_event_query("MASTERCLASS");
-        break;
-      default:
-        this.df_text_query(text);
-        break;
-    }
-  }
-
-  _handleInputKeyPress(e) {
-    if (e.key === "Enter") {
-      this.df_text_query(e.target.value);
-      e.target.value = "";
-    }
-  }
-
   render() {
     if (this.state.showBot) {
       return (
-        <div
-          style={{
-            minheight: 500,
-            maxHeight: 500,
-            width: 500,
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            border: "1px solid lightgrey"
-          }}
-        >
+        <div className={styles.showBot}>
           <nav>
             <div className="nav-wrapper blue">
-              <a href="/" className="brand-logo">
+              <div className="brand-logo">
                 Chatbot
-              </a>
+              </div>
               <ul id="nav-mobile" className="right">
                 <li>
                   <a href="/" onClick={this.hide}>
@@ -287,36 +270,22 @@ class Chatbot extends Component {
               </ul>
             </div>
           </nav>
-
-          <div
-            id="chatbot"
-            style={{
-              minHeight: 388,
-              maxHeight: 388,
-              width: "100%",
-              overflow: "auto"
-            }}
-          >
+          <div id="chatbot" className={styles.hideBot}>
             {this.renderMessages(this.state.messages)}
             <div
+              className={styles.el}
               ref={el => {
                 this.messagesEnd = el;
               }}
-              style={{ float: "left", clear: "both" }}
             ></div>
           </div>
-          <div className="col s12">
+          <div className="col s12 m12 l12">
             <input
-              style={{
-                margin: 0,
-                paddingLeft: "1%",
-                paddingRight: "1%",
-                width: "98%"
-              }}
+              className={styles.inputText}
               ref={input => {
                 this.talkInput = input;
               }}
-              placeholder="type a message:"
+              placeholder="Type a message:"
               onKeyPress={this._handleInputKeyPress}
               id="user_says"
               type="text"
@@ -326,22 +295,12 @@ class Chatbot extends Component {
       );
     } else {
       return (
-        <div
-          style={{
-            minheight: 40,
-            maxHeight: 500,
-            width: 400,
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            border: "1px solid lightgrey"
-          }}
-        >
-          <nav>
+        <div className={styles.maxStyle}>
+          <nav className={styles.navWrapper}>
             <div className="nav-wrapper">
-              <a href="/" className="brand-logo">
+              <div className="brand-logo">
                 Chatbot
-              </a>
+              </div>
               <ul id="nav-mobile" className="right">
                 <li>
                   <a href="/" onClick={this.show}>
@@ -352,15 +311,14 @@ class Chatbot extends Component {
             </div>
           </nav>
           <div
+            className={styles.el}
             ref={el => {
               this.messagesEnd = el;
             }}
-            style={{ float: "left", clear: "both" }}
           ></div>
         </div>
       );
     }
   }
 }
-
 export default withRouter(Chatbot);

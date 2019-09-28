@@ -7,7 +7,7 @@ const Message = (props) => {
                 <div className="row valign-wrapper">
                     {props.speaks === 'Bot' &&
                         <div className="col s2">
-                            <a href="/" className="btn-floating btn-large waves-effect waves-light red">{props.speaks}</a>
+                            <div className="btn-floating btn-large waves-effect waves-light red">{props.speaks}</div>
                         </div>
                     }
                     <div className="col s10">
@@ -17,7 +17,7 @@ const Message = (props) => {
                     </div>
                     {props.speaks === 'User' &&
                         <div className="col s2">
-                            <a href="/" className="btn-floating btn-large waves-effect waves-light blue">{props.speaks}</a>
+                            <div href="/" className="btn-floating btn-large waves-effect waves-light blue">{props.speaks}</div>
                         </div>
                     }
                 </div>

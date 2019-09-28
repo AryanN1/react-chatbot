@@ -1,0 +1,45 @@
+.showBot {
+  min-height: 500px;
+  max-height: 470px;
+  width: 400px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  border: 1px solid lightgrey;
+}
+.hideBot {
+  min-height: 388px;
+  max-height: 388px;
+  width: 100%;
+  overflow: auto;
+}
+.hidden{
+  overflow: hidden;
+}
+.overflow{
+  overflow: auto; 
+  overflow-y: scroll;
+}
+.el{
+  float: left;
+  clear: both;
+}
+.inputText{
+  margin: 0;
+  padding-left: 1%;
+  padding-right: 1%;
+  width: 98%;
+}
+.maxStyle{
+  min-height: 40px;
+  max-height: 500px;
+  width: 400px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  border: 1px solid lightgrey;
+}
+
+.navWrapper{
+  background-color: #ff5722 !important;
+}

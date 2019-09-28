@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import styles from './Header.module.css';
 
 const Header = () => (
-  <nav className="blue">
-    <div className="nav-wrapper">
+  <nav className={styles.nav} >
+    <div className={styles.nav}>
       <Link to={"/"} className="brand-logo hide-on-small-only">
         Web Development Courses
       </Link>

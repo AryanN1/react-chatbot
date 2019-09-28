@@ -3,7 +3,7 @@
   color: #ff5722;
 }
 
-.textColor {
+.textInfo {
   text-align: left;
   color: #303f9f;
   font-size: 20px;
@@ -16,4 +16,11 @@
 .arrow {
   text-align: center;
   color: #303f9f;
+}
+.wordBreak{
+  overflow-wrap: break-all;
+  text-align: left;
+  color: #303f9f;
+  font-size: 20px;
+  width: 70%;
 }

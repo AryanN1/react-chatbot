@@ -1,0 +1,29 @@
+.courseList{
+  height: 100%;
+  max-width: 84vw;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+.cardTitle{
+  font-size: 20px;
+  text-align: center;
+  color: #3f51b5;
+}
+.buyCourse{
+  color: #ff5722 !important;
+  text-align: center;
+  margin-right: 0px;
+}
+.textAlign{
+  font-size: 15px;
+  text-align: center;
+}
+.card{
+  width: 270px;
+  padding-right: 30px;
+}
+.cardImage{
+  width: 240px;
+}

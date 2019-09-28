@@ -1,21 +1,23 @@
 import React from 'react';
+import styles from './Card.module.css';
 
 const Card = (props) => {
   return  (
-  <div style={{width: 270, paddingRight: 30, float: 'left'}}>
+  <div className={styles.divStyle}>
     <div className="card">
-      <div className="card-image" style={{width: 240}}>
-        <img alt={props.payload.fields.header.stringValue} 
-        src={props.payload.fields.image.stringValue}/>
-          <span className="card-title">
+    <span className={styles.cardTitle}>
           {props.payload.fields.header.stringValue}</span>
+      <div className="card-image">
+        <img className={styles.cardImage} alt={props.payload.fields.header.stringValue} 
+        src={props.payload.fields.image.stringValue}/>
       </div>
-      <div className="card-content">
+      <br/>
+      <div className={styles.cardContent}>
         {props.payload.fields.description.stringValue}
         <p><a href='/'>{props.payload.fields.price.stringValue}</a></p>
       </div>
-      <div className="card-action">
-        <a target="_blank" rel="noopener noreferrer" href={props.payload.fields.link.stringValue}>Buy Now</a>
+      <div className={styles.cardAction}>
+        <a className={styles.aTextColor} target="_blank" rel="noopener noreferrer" href={props.payload.fields.link.stringValue}>Buy Now</a>
       </div>
     </div>
   </div>
