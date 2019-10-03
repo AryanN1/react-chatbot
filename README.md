@@ -21,7 +21,7 @@ Once, the user has given the Chatbot their info, the users info will be posted t
 ## Screenshot of app
 
 Chatbot Opened[https://imgur.com/a/7gAumyE]
-<br/>
+
 Chatbot Closed[https://imgur.com/EP59Luw]
 
 ## Live Demo
