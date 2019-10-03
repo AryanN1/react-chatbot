@@ -8,8 +8,11 @@ Once, the user has given the Chatbot their info, the users info will be posted t
 ## Technology Used: (PERN Stack)
 
 -Postgres => Database
+
 -Express => Server-Side
+
 -React => Frontend
+
 -Node => Server-Side
 
 ## Other Technology Used:
