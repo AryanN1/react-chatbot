@@ -2,6 +2,7 @@ import React from "react";
 import './QuickReply.module.css'; 
 
 const QuickReply = props => {
+  console.log(props.reply.structValue.fields)
   if (props.reply.structValue.fields.payload) {
     return (
       <a id="#recButton"

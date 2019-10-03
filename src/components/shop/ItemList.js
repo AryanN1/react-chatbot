@@ -8,7 +8,8 @@ const ItemList = () => (
         <div className="card">
           <span className={styles.cardTitle}>Scratch the Cat</span>
           <div className="card-image">
-            <img className={styles.cardImage}
+            <img
+              className={styles.cardImage}
               alt="course-artwork"
               src="https://i.udemycdn.com/course/480x270/830298_f8f8_4.jpg"
             />
@@ -19,12 +20,14 @@ const ItemList = () => (
               help kids learn to code.
             </p>
           </div>
-          <div className="card-action">
+          <div className={styles.cardAction}>
             <a
               className={styles.buyCourse}
               href="https://www.udemy.com/course/scratch-game-programming/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Buy This Course
+              BUY THIS COURSE
             </a>
           </div>
         </div>
@@ -46,12 +49,14 @@ const ItemList = () => (
               design, Sass, and more
             </p>
           </div>
-          <div className="card-action">
+          <div className={styles.cardAction}>
             <a
               className={styles.buyCourse}
               href="https://www.udemy.com/course/web-design-for-beginners-real-world-coding-in-html-css/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Buy this course
+              BUY THIS COURSE
             </a>
           </div>
         </div>
@@ -70,16 +75,18 @@ const ItemList = () => (
           <div className="card-content">
             <p className={styles.textAlign}>*Chatbot recommended*</p>
             <p className={styles.textAlign}>
-              The only course you need to learn web development: HTML, CSS,
-              JavaScript, Node, and More!
+              The only course you need to learn: HTML, CSS, JavaScript, Node,
+              and More!
             </p>
           </div>
-          <div className="card-action">
+          <div className={styles.cardAction}>
             <a
               className={styles.buyCourse}
               href="https://www.udemy.com/course/the-web-developer-bootcamp/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Buy This Course
+              BUY THIS COURSE
             </a>
           </div>
         </div>
@@ -101,12 +108,14 @@ const ItemList = () => (
               Node
             </p>
           </div>
-          <div className="card-action">
+          <div className={styles.cardAction}>
             <a
               className={styles.buyCourse}
               href="https://www.udemy.com/course/ultimate-web/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Buy This Course
+              BUY THIS COURSE
             </a>
           </div>
         </div>
@@ -130,12 +139,14 @@ const ItemList = () => (
               building reports through real-world projects
             </p>
           </div>
-          <div className="card-action">
+          <div className={styles.cardAction}>
             <a
               className={styles.buyCourse}
               href="https://www.udemy.com/course/the-ultimate-mysql-bootcamp-go-from-sql-beginner-to-expert/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Buy This Course
+              BUY THIS COURSE
             </a>
           </div>
         </div>
@@ -157,12 +168,14 @@ const ItemList = () => (
               Redux, React Routing, Animations, Next.js and way more!
             </p>
           </div>
-          <div className="card-action">
+          <div className={styles.cardAction}>
             <a
               className={styles.buyCourse}
               href="https://www.udemy.com/course/react-the-complete-guide-incl-redux/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Buy this Course
+              BUY THIS COURSE
             </a>
           </div>
         </div>
@@ -186,12 +199,14 @@ const ItemList = () => (
               real apps including Uber, Whatsapp and Instagram!
             </p>
           </div>
-          <div className="card-action">
+          <div className={styles.cardAction}>
             <a
               className={styles.buyCourse}
               href="https://www.udemy.com/course/complete-android-n-developer-course/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Buy this Course
+              BUY THIS COURSE
             </a>
           </div>
         </div>
@@ -216,10 +231,15 @@ const ItemList = () => (
               SwiftUI with Xcode 11.
             </p>
           </div>
-          <div className="card-action">
-            <a className={styles.buyCourse}
+          <div className={styles.cardAction}>
+            <a
+              className={styles.buyCourse}
               href="https://www.udemy.com/course/the-complete-ios-developer-course-with-swift/"
-            > Buy this course
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {" "}
+              BUY THIS COURSE
             </a>
           </div>
         </div>

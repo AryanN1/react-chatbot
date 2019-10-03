@@ -1,36 +1,51 @@
 .showBot {
-  min-height: 500px;
-  max-height: 470px;
+  max-height: 500px;
+  min-height: 470px;
   width: 400px;
   position: fixed;
   bottom: 0;
   right: 0;
   border: 1px solid lightgrey;
+  z-index: 999;
+    background-color: white;
 }
 .hideBot {
   min-height: 388px;
   max-height: 388px;
   width: 100%;
   overflow: auto;
+  z-index: 999;
+    background-color: white;
 }
-.hidden{
+.hidden {
   overflow: hidden;
 }
-.overflow{
-  overflow: auto; 
+.overflow {
+  overflow: auto;
   overflow-y: scroll;
 }
-.el{
+.el {
   float: left;
   clear: both;
 }
-.inputText{
+.inputText {
   margin: 0;
   padding-left: 1%;
   padding-right: 1%;
   width: 98%;
+  border-top: 1px solid grey;
+  z-index: 999;
+  background-color: white;
+  
 }
-.maxStyle{
+::placeholder {
+  color: red;
+  opacity: 1;
+  border-top: 1px solid grey;
+  z-index: 999;
+    background-color: white;
+}
+.maxStyle {
   min-height: 40px;
   max-height: 500px;
   width: 400px;
@@ -40,6 +55,17 @@
   border: 1px solid lightgrey;
 }
 
-.navWrapper{
+.navWrapper {
   background-color: #ff5722 !important;
 }
+@media only screen and (max-width: 600px) {
+  .navWrapper {
+     background: black !important;
+  }
+  .showBot{
+    max-height: 300px;
+  }
+  .hideBot{
+    max-height: 150px;
+  }
+ }

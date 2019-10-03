@@ -10,17 +10,14 @@ import Chatbot from "./chatbot/Chatbot";
 const App = () => (
 <div>
     <BrowserRouter>
-        <div>
-        {" "}
-        {/*className="container"*/}
+    <div>
         <Header />
         <Route exact path="/" component={Landing} />
         <Route exact path="/about" component={About} />
         <Route exact path="/shop" component={Shop} />
         <Chatbot />
-        </div>
+    </div>
     </BrowserRouter>
 </div>
 );
-
 export default App;

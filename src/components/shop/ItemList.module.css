@@ -6,15 +6,13 @@
   align-items: center;
   justify-content: flex-start;
 }
+.buyCourse{
+  color: #ff5722;
+}
 .cardTitle{
   font-size: 20px;
   text-align: center;
   color: #3f51b5;
-}
-.buyCourse{
-  color: #ff5722 !important;
-  text-align: center;
-  margin-right: 0px;
 }
 .textAlign{
   font-size: 15px;
@@ -26,4 +24,16 @@
 }
 .cardImage{
   width: 240px;
+}
+.cardAction{
+  text-align: center;
+  color: #ff5722 !important;
+  text-align: center !important;
+  margin-right: 0px;
+  padding: 16px 24px;
+  border-top: 1px solid grey;
+  border-radius: 0 0 2px 2px;
+}
+.card{
+  text-align: center;
 }

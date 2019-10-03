@@ -21,15 +21,15 @@ class Chatbot extends Component {
 
   constructor(props) {
     super(props);
-    // Binding is needed to make `this` work
+    // Binding needed to make `this` work
     this._handleInputKeyPress = this._handleInputKeyPress.bind(this);
     this._handleQuickReplyPayload = this._handleQuickReplyPayload.bind(this);
     this.hide = this.hide.bind(this);
     this.show = this.show.bind(this);
-    //Setting State
+    //Setting State of Chatbot in the Shop section
     this.state = {
       messages: [],
-      showBot: true,
+      showBot: false,
       shopWelcomeSent: false
     };
 
@@ -54,7 +54,7 @@ class Chatbot extends Component {
         text: text,
         userID: cookies.get("userID")
       });
-
+      // eslint-disable-next-line
       for (let msg of res.data.fulfillmentMessages) {
         says = {
           speaks: "Bot",
@@ -84,7 +84,7 @@ class Chatbot extends Component {
       const res = await axios.post(`${baseURL}/api/df_event_query`, {
         event: event,
         userID: cookies.get("userID")
-      });
+      }); // eslint-disable-next-line
       for (let msg of res.data.fulfillmentMessages) {
         let says = {
           speaks: "Bot",
@@ -148,8 +148,7 @@ class Chatbot extends Component {
   }
 
   renderCards(cards) {
-    return cards.map((card, i) => 
-    <Card key={i} payload={card.structValue} />);
+    return cards.map((card, i) => <Card key={i} payload={card.structValue} />);
   }
 
   _handleQuickReplyPayload(event, payload, text) {
@@ -188,7 +187,7 @@ class Chatbot extends Component {
     ) {
       return (
         <div key={i}>
-          <div className="card-panel grey lighten-5 z-depth-1"> 
+          <div className="card-panel grey lighten-5 z-depth-1">
             <div className={styles.hidden}>
               <div className="col s2">
                 <div
@@ -199,10 +198,14 @@ class Chatbot extends Component {
                 </div>
               </div>
               <div className={styles.overflow}>
-                <div 
+                <div
                   style={{
-                  height: 300,
-                  width: message.msg.payload.fields.cards.listValue.values.length * 270}}>
+                    height: 300,
+                    width:
+                      message.msg.payload.fields.cards.listValue.values.length *
+                      270
+                  }}
+                >
                   {this.renderCards(
                     message.msg.payload.fields.cards.listValue.values
                   )}
@@ -251,16 +254,13 @@ class Chatbot extends Component {
       }
     });
   }
-
   render() {
     if (this.state.showBot) {
       return (
         <div className={styles.showBot}>
           <nav>
             <div className="nav-wrapper blue">
-              <div className="brand-logo">
-                Chatbot
-              </div>
+              <div className="brand-logo">Chatbot</div>
               <ul id="nav-mobile" className="right">
                 <li>
                   <a href="/" onClick={this.hide}>
@@ -298,9 +298,7 @@ class Chatbot extends Component {
         <div className={styles.maxStyle}>
           <nav className={styles.navWrapper}>
             <div className="nav-wrapper">
-              <div className="brand-logo">
-                Chatbot
-              </div>
+              <div className="brand-logo">Chatbot</div>
               <ul id="nav-mobile" className="right">
                 <li>
                   <a href="/" onClick={this.show}>

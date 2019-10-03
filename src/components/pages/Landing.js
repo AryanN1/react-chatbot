@@ -16,8 +16,7 @@ const Landing = () => {
           &#129302;
         </span>{" "}
       </h3>
-      <h3 className={styles.arrow}>&#10551;</h3>
-      <br />
+      <h3 className={styles.arrow}>&#8690;</h3>
       <dt className={styles.textInfo}> User can ask the Chatbot: </dt>
       <dd className={styles.textInfo}>"recommend"</dd>
       <dd className={styles.textInfo}>"recommendation"</dd>
@@ -26,16 +25,14 @@ const Landing = () => {
       <dd className={styles.textInfo}>"Give me recommendations"</dd>
       <dd className={styles.textInfo}>"Do you recommend anything?"</dd>
       <p className={styles.textInfo}>
-        {" "}
-        The chatbot will give you a list of recommend courses.
-      </p>
-      <p className={styles.wordBreak}>
-        If the user asks for personal training and click "Yes", 
+        The chatbot will give you a list of recommend courses. < br />
+        If the user asks
+        for personal training and click "Yes", < br />
         the chatbot will ask
-        the user for their name, email, phone, and address,
+        the user
+        for their name, email, < br /> phone, and address, 
         then, it'll capture the users info and store it in a database
       </p>
-      
     </div>
   );
 };
