@@ -24,3 +24,8 @@
   font-size: 20px;
   width: 70%;
 }
+@media only screen and (max-width: 600px) {
+  .header{
+    padding-bottom: 10vh !important;
+  }
+ }

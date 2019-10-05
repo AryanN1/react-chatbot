@@ -62,9 +62,6 @@
   .navWrapper {
      background: black !important;
   }
-  .showBot{
-    max-height: 300px;
-  }
   .hideBot{
     max-height: 150px;
   }
