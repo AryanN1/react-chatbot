@@ -4,19 +4,8 @@ import styles from "./Landing.module.css";
 const Landing = () => {
   return (
     <div className={styles.header}>
-      <h1>Find a great Web Dev course with the help of a chatbot!</h1>
-      <h2> Welcome to my React Chatbot app! </h2>
-      <br/>
-      <h3 className={styles.heading}>
-        <span role="img" aria-label="robot">
-          &#129302;
-        </span>{" "}
-        Try it out here{" "}
-        <span role="img" aria-label="robot">
-          &#129302;
-        </span>{" "}
-      </h3>
-      <h3 className={styles.arrow}>&#8690;</h3>
+      <h1 className={styles.title}>Find a great Web Dev course with the help of a chatbot!</h1>
+      <h2 className={styles.subtitle}> Welcome to my React Chatbot app! </h2>
       <dt className={styles.textInfo}> User can ask the Chatbot: </dt>
       <dd className={styles.textInfo}>"recommend"</dd>
       <dd className={styles.textInfo}>"recommendation"</dd>
